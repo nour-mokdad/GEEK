@@ -33,3 +33,52 @@ if (reviewsRow && prevBtn && nextBtn) {
     }
   });
 }
+
+//start of form
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const form = document.querySelector(".contact-form");
+  const overlay = document.getElementById("thankYouOverlay");
+  const closeBtn = document.getElementById("closeThankYou");
+
+  /* Submit form using PHP */
+  if (form) {
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+
+      fetch("submit_form.php", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.text())
+      .then(result => {
+        if (result.trim() === "success") {
+          overlay.style.display = "flex";
+          form.reset();
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
+      })
+      .catch(error => {
+        alert("Connection error.");
+      });
+    });
+  }
+
+  /* Close thank you overlay */
+  if (closeBtn) {
+    closeBtn.addEventListener("click", function () {
+      overlay.style.display = "none";
+    });
+  }
+
+});
+
+
+
+
+
+//end of form
